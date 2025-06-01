@@ -297,6 +297,197 @@ def test_investment_api(tester):
                 404
             )
 
+def test_investment_qa_api(tester):
+    """Test the Investment Q&A API endpoints"""
+    print("\n🤖 TESTING INVESTMENT Q&A API ENDPOINTS")
+    print("="*50)
+    
+    # Test 1: Ask about a specific stock (AAPL)
+    success, aapl_response = tester.run_test(
+        "Ask about AAPL",
+        "POST",
+        "api/investments/ask",
+        200,
+        data={"question": "Should I buy AAPL?", "user_id": "test_user"}
+    )
+    
+    if success and aapl_response:
+        print("\nAAPL Question Response Analysis:")
+        # Check if the response contains key elements
+        contains_buy_rec = "BUY" in aapl_response["answer"]
+        contains_target_price = "$" in aapl_response["answer"] and "target price" in aapl_response["answer"].lower()
+        contains_aapl_symbol = "AAPL" in aapl_response["relevant_symbols"]
+        confidence_score = aapl_response["confidence"]
+        has_sources = len(aapl_response["sources"]) > 0
+        
+        print(f"{'✅' if contains_buy_rec else '❌'} Contains BUY recommendation")
+        print(f"{'✅' if contains_target_price else '❌'} Contains target price")
+        print(f"{'✅' if contains_aapl_symbol else '❌'} References AAPL symbol")
+        print(f"{'✅' if confidence_score >= 0.5 else '❌'} Has confidence score ({confidence_score})")
+        print(f"{'✅' if has_sources else '❌'} Has sources")
+    
+    # Test 2: Ask about risk level (Tesla)
+    success, tesla_response = tester.run_test(
+        "Ask about Tesla risk",
+        "POST",
+        "api/investments/ask",
+        200,
+        data={"question": "How risky is Tesla?", "user_id": "test_user"}
+    )
+    
+    if success and tesla_response:
+        print("\nTesla Risk Question Response Analysis:")
+        # Check if the response contains key elements
+        contains_high_risk = "HIGH" in tesla_response["answer"]
+        contains_volatility = "volatility" in tesla_response["answer"].lower()
+        contains_tsla_symbol = "TSLA" in tesla_response["relevant_symbols"]
+        
+        print(f"{'✅' if contains_high_risk else '❌'} Mentions HIGH risk level")
+        print(f"{'✅' if contains_volatility else '❌'} Discusses volatility")
+        print(f"{'✅' if contains_tsla_symbol else '❌'} References TSLA symbol")
+    
+    # Test 3: Ask about target price (NVDA)
+    success, nvda_response = tester.run_test(
+        "Ask about NVDA target price",
+        "POST",
+        "api/investments/ask",
+        200,
+        data={"question": "What's the target price for NVDA?", "user_id": "test_user"}
+    )
+    
+    if success and nvda_response:
+        print("\nNVDA Target Price Question Response Analysis:")
+        # Check if the response contains key elements
+        contains_target_price = "$" in nvda_response["answer"] and "target" in nvda_response["answer"].lower()
+        contains_nvda_symbol = "NVDA" in nvda_response["relevant_symbols"]
+        
+        print(f"{'✅' if contains_target_price else '❌'} Contains target price")
+        print(f"{'✅' if contains_nvda_symbol else '❌'} References NVDA symbol")
+    
+    # Test 4: Ask about top stock picks
+    success, picks_response = tester.run_test(
+        "Ask about top stock picks",
+        "POST",
+        "api/investments/ask",
+        200,
+        data={"question": "What are your top 3 stock picks?", "user_id": "test_user"}
+    )
+    
+    if success and picks_response:
+        print("\nTop Stock Picks Question Response Analysis:")
+        # Check if the response contains key elements
+        contains_multiple_stocks = len(picks_response["relevant_symbols"]) >= 2
+        contains_buy_rec = "BUY" in picks_response["answer"]
+        
+        print(f"{'✅' if contains_multiple_stocks else '❌'} Lists multiple stocks ({len(picks_response['relevant_symbols'])})")
+        print(f"{'✅' if contains_buy_rec else '❌'} Contains BUY recommendations")
+    
+    # Test 5: Ask about portfolio diversification
+    success, diversify_response = tester.run_test(
+        "Ask about portfolio diversification",
+        "POST",
+        "api/investments/ask",
+        200,
+        data={"question": "How should I diversify my portfolio?", "user_id": "test_user"}
+    )
+    
+    if success and diversify_response:
+        print("\nPortfolio Diversification Question Response Analysis:")
+        # Check if the response contains key elements
+        contains_sectors = "sector" in diversify_response["answer"].lower()
+        contains_risk = "risk" in diversify_response["answer"].lower()
+        
+        print(f"{'✅' if contains_sectors else '❌'} Discusses sectors")
+        print(f"{'✅' if contains_risk else '❌'} Discusses risk levels")
+    
+    # Test 6: Ask about market outlook
+    success, market_response = tester.run_test(
+        "Ask about market outlook",
+        "POST",
+        "api/investments/ask",
+        200,
+        data={"question": "What's the market outlook?", "user_id": "test_user"}
+    )
+    
+    if success and market_response:
+        print("\nMarket Outlook Question Response Analysis:")
+        # Check if the response contains key elements
+        contains_buy_percentage = "%" in market_response["answer"] and "BUY" in market_response["answer"]
+        contains_sentiment = any(word in market_response["answer"].lower() for word in ["bullish", "bearish", "neutral"])
+        
+        print(f"{'✅' if contains_buy_percentage else '❌'} Shows BUY percentage")
+        print(f"{'✅' if contains_sentiment else '❌'} Indicates market sentiment")
+    
+    # Test 7: Ask about tech sector
+    success, tech_response = tester.run_test(
+        "Ask about tech sector",
+        "POST",
+        "api/investments/ask",
+        200,
+        data={"question": "How's the tech sector?", "user_id": "test_user"}
+    )
+    
+    if success and tech_response:
+        print("\nTech Sector Question Response Analysis:")
+        # Check if the response contains key elements
+        contains_tech_sector = "Technology" in tech_response["answer"]
+        contains_tech_stocks = len(tech_response["relevant_symbols"]) > 0
+        
+        print(f"{'✅' if contains_tech_sector else '❌'} Discusses Technology sector")
+        print(f"{'✅' if contains_tech_stocks else '❌'} References tech stocks")
+    
+    # Test 8: Ask about strong sectors
+    success, sectors_response = tester.run_test(
+        "Ask about strong sectors",
+        "POST",
+        "api/investments/ask",
+        200,
+        data={"question": "Which sectors look strong?", "user_id": "test_user"}
+    )
+    
+    if success and sectors_response:
+        print("\nStrong Sectors Question Response Analysis:")
+        # Check if the response contains key elements
+        contains_tech = "Technology" in sectors_response["answer"]
+        contains_financial = "Financial" in sectors_response["answer"]
+        
+        print(f"{'✅' if contains_tech else '❌'} Mentions Technology sector")
+        print(f"{'✅' if contains_financial else '❌'} Mentions Financial Services sector")
+    
+    # Test 9: Ask about low-risk investments
+    success, low_risk_response = tester.run_test(
+        "Ask about low-risk investments",
+        "POST",
+        "api/investments/ask",
+        200,
+        data={"question": "What are low-risk investments?", "user_id": "test_user"}
+    )
+    
+    if success and low_risk_response:
+        print("\nLow-Risk Investments Question Response Analysis:")
+        # Check if the response contains key elements
+        contains_low_risk = "LOW" in low_risk_response["answer"]
+        
+        print(f"{'✅' if contains_low_risk else '❌'} Lists LOW risk options")
+    
+    # Test 10: Ask about high-risk opportunities
+    success, high_risk_response = tester.run_test(
+        "Ask about high-risk opportunities",
+        "POST",
+        "api/investments/ask",
+        200,
+        data={"question": "Show me high-risk opportunities?", "user_id": "test_user"}
+    )
+    
+    if success and high_risk_response:
+        print("\nHigh-Risk Opportunities Question Response Analysis:")
+        # Check if the response contains key elements
+        contains_high_risk = "HIGH" in high_risk_response["answer"]
+        contains_expected_symbols = any(symbol in high_risk_response["answer"] for symbol in ["TSLA", "BTC-USD", "USO"])
+        
+        print(f"{'✅' if contains_high_risk else '❌'} Discusses HIGH risk options")
+        print(f"{'✅' if contains_expected_symbols else '❌'} Mentions expected high-risk symbols")
+
 def main():
     # Get the backend URL from the frontend .env file
     backend_url = "https://201e85b7-6e5c-4c05-8b17-d262a900ba36.preview.emergentagent.com"
@@ -326,6 +517,9 @@ def main():
     
     # Test the Investment API endpoints with focus on Phase 1 enhancements
     test_investment_api(tester)
+    
+    # Test the Investment Q&A API endpoints
+    test_investment_qa_api(tester)
     
     # Print summary of all tests
     tester.print_summary()
