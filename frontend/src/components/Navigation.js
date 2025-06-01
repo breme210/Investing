@@ -42,6 +42,16 @@ const Navigation = () => {
             >
               News
             </Link>
+            <Link
+              to="/investments"
+              className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
+                isActive('/investments') || location.pathname.startsWith('/investments/')
+                  ? 'text-white bg-gray-800' 
+                  : 'text-gray-300 hover:text-white hover:bg-gray-700'
+              }`}
+            >
+              Investments
+            </Link>
           </div>
         </div>
       </div>
