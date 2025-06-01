@@ -145,31 +145,6 @@ async def get_news_categories():
     return [{"category": cat["_id"], "count": cat["count"]} for cat in categories]
 
 # Investment API Endpoints
-@api_router.get("/investments", response_model=List[InvestmentRecommendationResponse])
-async def get_investment_recommendations(asset_type: Optional[str] = Query(None)):
-    query = {}
-    if asset_type:
-        query["asset_type"] = asset_type
-    
-    recommendations = await db.investment_recommendations.find(query).sort("last_updated", -1).to_list(100)
-    return [InvestmentRecommendationResponse(**rec) for rec in recommendations]
-
-@api_router.get("/investments/{recommendation_id}", response_model=InvestmentRecommendationResponse)
-async def get_investment_recommendation(recommendation_id: str):
-    recommendation = await db.investment_recommendations.find_one({"id": recommendation_id})
-    if not recommendation:
-        raise HTTPException(status_code=404, detail="Investment recommendation not found")
-    return InvestmentRecommendationResponse(**recommendation)
-
-@api_router.get("/investments/types/list")
-async def get_investment_asset_types():
-    pipeline = [
-        {"$group": {"_id": "$asset_type", "count": {"$sum": 1}}},
-        {"$sort": {"count": -1}}
-    ]
-    types = await db.investment_recommendations.aggregate(pipeline).to_list(100)
-    return [{"asset_type": type_data["_id"], "count": type_data["count"]} for type_data in types]
-
 @api_router.get("/investments/summary")
 async def get_investment_summary():
     total_count = await db.investment_recommendations.count_documents({})
@@ -197,6 +172,31 @@ async def get_investment_summary():
             "commodities": commodities_count
         }
     }
+
+@api_router.get("/investments/types/list")
+async def get_investment_asset_types():
+    pipeline = [
+        {"$group": {"_id": "$asset_type", "count": {"$sum": 1}}},
+        {"$sort": {"count": -1}}
+    ]
+    types = await db.investment_recommendations.aggregate(pipeline).to_list(100)
+    return [{"asset_type": type_data["_id"], "count": type_data["count"]} for type_data in types]
+
+@api_router.get("/investments", response_model=List[InvestmentRecommendationResponse])
+async def get_investment_recommendations(asset_type: Optional[str] = Query(None)):
+    query = {}
+    if asset_type:
+        query["asset_type"] = asset_type
+    
+    recommendations = await db.investment_recommendations.find(query).sort("last_updated", -1).to_list(100)
+    return [InvestmentRecommendationResponse(**rec) for rec in recommendations]
+
+@api_router.get("/investments/{recommendation_id}", response_model=InvestmentRecommendationResponse)
+async def get_investment_recommendation(recommendation_id: str):
+    recommendation = await db.investment_recommendations.find_one({"id": recommendation_id})
+    if not recommendation:
+        raise HTTPException(status_code=404, detail="Investment recommendation not found")
+    return InvestmentRecommendationResponse(**recommendation)
 
 # Include the router in the main app
 app.include_router(api_router)
