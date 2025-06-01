@@ -6,6 +6,7 @@ import NewsPage from './components/NewsPage';
 import NewsDetail from './components/NewsDetail';
 import InvestmentsPage from './components/InvestmentsPage';
 import InvestmentDetail from './components/InvestmentDetail';
+import AskAdvisorPage from './components/AskAdvisorPage';
 import './App.css';
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
             <Route path="/news/:id" element={<NewsDetail />} />
             <Route path="/investments" element={<InvestmentsPage />} />
             <Route path="/investments/:id" element={<InvestmentDetail />} />
+            <Route path="/ask-advisor" element={<AskAdvisorPage />} />
           </Routes>
         </main>
       </div>
