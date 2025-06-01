@@ -110,6 +110,19 @@ class InvestmentRecommendationResponse(BaseModel):
     sector: Optional[str]
     technical_indicators: Optional[TechnicalIndicators]
 
+# Q&A Models
+class InvestmentQuestion(BaseModel):
+    question: str
+    user_id: Optional[str] = "anonymous"
+
+class InvestmentAnswer(BaseModel):
+    question: str
+    answer: str
+    relevant_symbols: List[str] = []
+    confidence: float
+    response_time: datetime = Field(default_factory=datetime.utcnow)
+    sources: List[str] = []
+
 # Add your routes to the router instead of directly to app
 @api_router.get("/")
 async def root():
