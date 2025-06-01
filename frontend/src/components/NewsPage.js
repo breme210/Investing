@@ -59,6 +59,12 @@ const NewsPage = () => {
 
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
+    // Update URL params
+    if (category) {
+      setSearchParams({ category });
+    } else {
+      setSearchParams({});
+    }
   };
 
   return (
