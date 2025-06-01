@@ -61,6 +61,13 @@ class NewsArticleResponse(BaseModel):
     read_time: int
 
 # Investment Models
+class TechnicalIndicators(BaseModel):
+    rsi: Optional[float] = None
+    moving_avg_50: Optional[float] = None
+    moving_avg_200: Optional[float] = None
+    pe_ratio: Optional[float] = None
+    volatility: Optional[float] = None
+
 class InvestmentRecommendation(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     symbol: str
@@ -80,6 +87,7 @@ class InvestmentRecommendation(BaseModel):
     price_change_percent: float = 0.0
     market_cap: Optional[str] = None
     sector: Optional[str] = None
+    technical_indicators: Optional[TechnicalIndicators] = None
 
 class InvestmentRecommendationResponse(BaseModel):
     id: str
@@ -100,6 +108,7 @@ class InvestmentRecommendationResponse(BaseModel):
     price_change_percent: float
     market_cap: Optional[str]
     sector: Optional[str]
+    technical_indicators: Optional[TechnicalIndicators]
 
 # Add your routes to the router instead of directly to app
 @api_router.get("/")
