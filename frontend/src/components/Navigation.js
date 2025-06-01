@@ -52,6 +52,16 @@ const Navigation = () => {
             >
               Investments
             </Link>
+            <Link
+              to="/ask-advisor"
+              className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
+                isActive('/ask-advisor')
+                  ? 'text-white bg-gray-800' 
+                  : 'text-gray-300 hover:text-white hover:bg-gray-700'
+              }`}
+            >
+              Ask Advisor
+            </Link>
           </div>
         </div>
       </div>
