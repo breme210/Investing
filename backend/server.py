@@ -60,6 +60,47 @@ class NewsArticleResponse(BaseModel):
     tags: List[str] = []
     read_time: int
 
+# Investment Models
+class InvestmentRecommendation(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    symbol: str
+    name: str
+    asset_type: str  # "stock", "index", "commodity"
+    current_price: float
+    target_price: float
+    recommendation: str  # "BUY", "SELL", "HOLD"
+    risk_level: str  # "LOW", "MEDIUM", "HIGH"
+    confidence_score: int  # 1-100
+    timeframe: str  # "1M", "3M", "6M", "1Y"
+    analyst: str
+    analysis: str
+    key_factors: List[str] = []
+    last_updated: datetime = Field(default_factory=datetime.utcnow)
+    price_change_24h: float = 0.0
+    price_change_percent: float = 0.0
+    market_cap: Optional[str] = None
+    sector: Optional[str] = None
+
+class InvestmentRecommendationResponse(BaseModel):
+    id: str
+    symbol: str
+    name: str
+    asset_type: str
+    current_price: float
+    target_price: float
+    recommendation: str
+    risk_level: str
+    confidence_score: int
+    timeframe: str
+    analyst: str
+    analysis: str
+    key_factors: List[str]
+    last_updated: datetime
+    price_change_24h: float
+    price_change_percent: float
+    market_cap: Optional[str]
+    sector: Optional[str]
+
 # Add your routes to the router instead of directly to app
 @api_router.get("/")
 async def root():
