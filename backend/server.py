@@ -35,6 +35,31 @@ class StatusCheck(BaseModel):
 class StatusCheckCreate(BaseModel):
     client_name: str
 
+# News Models
+class NewsArticle(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    title: str
+    summary: str
+    content: str
+    author: str
+    category: str
+    publish_date: datetime = Field(default_factory=datetime.utcnow)
+    image_url: Optional[str] = None
+    tags: List[str] = []
+    read_time: int = 5  # estimated read time in minutes
+
+class NewsArticleResponse(BaseModel):
+    id: str
+    title: str
+    summary: str
+    content: str
+    author: str
+    category: str
+    publish_date: datetime
+    image_url: Optional[str] = None
+    tags: List[str] = []
+    read_time: int
+
 # Add your routes to the router instead of directly to app
 @api_router.get("/")
 async def root():
