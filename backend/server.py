@@ -77,6 +77,32 @@ async def get_status_checks():
     status_checks = await db.status_checks.find().to_list(1000)
     return [StatusCheck(**status_check) for status_check in status_checks]
 
+# News API Endpoints
+@api_router.get("/news", response_model=List[NewsArticleResponse])
+async def get_news_articles(category: Optional[str] = Query(None)):
+    query = {}
+    if category:
+        query["category"] = category
+    
+    articles = await db.news_articles.find(query).sort("publish_date", -1).to_list(100)
+    return [NewsArticleResponse(**article) for article in articles]
+
+@api_router.get("/news/{article_id}", response_model=NewsArticleResponse)
+async def get_news_article(article_id: str):
+    article = await db.news_articles.find_one({"id": article_id})
+    if not article:
+        raise HTTPException(status_code=404, detail="Article not found")
+    return NewsArticleResponse(**article)
+
+@api_router.get("/news/categories/list")
+async def get_news_categories():
+    pipeline = [
+        {"$group": {"_id": "$category", "count": {"$sum": 1}}},
+        {"$sort": {"count": -1}}
+    ]
+    categories = await db.news_articles.aggregate(pipeline).to_list(100)
+    return [{"category": cat["_id"], "count": cat["count"]} for cat in categories]
+
 # Include the router in the main app
 app.include_router(api_router)
 
