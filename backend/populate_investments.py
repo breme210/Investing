@@ -43,6 +43,7 @@ sample_recommendations = [
         "price_change_24h": 3.45,
         "price_change_percent": 1.79,
         "market_cap": "$3.01T",
+        "pe_ratio": None,
         "sector": "Technology"
     },
     {
