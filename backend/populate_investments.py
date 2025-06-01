@@ -70,6 +70,7 @@ sample_recommendations = [
         "price_change_24h": -5.67,
         "price_change_percent": -2.23,
         "market_cap": "$792.3B",
+        "pe_ratio": None,
         "sector": "Automotive"
     },
     {
