@@ -893,6 +893,38 @@ async def get_investment_recommendation(recommendation_id: str):
 # Include the router in the main app
 app.include_router(api_router)
 
+# Manual data refresh endpoint
+@api_router.post("/admin/refresh-data")
+async def refresh_market_data():
+    """Manually refresh market data for demonstration purposes"""
+    import subprocess
+    import os
+    
+    try:
+        # Run the update script
+        result = subprocess.run([
+            "python", "/app/update_data.py"
+        ], capture_output=True, text=True, cwd="/app")
+        
+        if result.returncode == 0:
+            return {
+                "success": True,
+                "message": "Market data refreshed successfully",
+                "output": result.stdout
+            }
+        else:
+            return {
+                "success": False,
+                "message": "Failed to refresh data",
+                "error": result.stderr
+            }
+    except Exception as e:
+        return {
+            "success": False,
+            "message": "Error refreshing data",
+            "error": str(e)
+        }
+
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
