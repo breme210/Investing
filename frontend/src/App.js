@@ -7,6 +7,7 @@ import NewsDetail from './components/NewsDetail';
 import InvestmentsPage from './components/InvestmentsPage';
 import InvestmentDetail from './components/InvestmentDetail';
 import AskAdvisorPage from './components/AskAdvisorPage';
+import './styles/DesignSystem.css';
 import './App.css';
 
 function App() {
