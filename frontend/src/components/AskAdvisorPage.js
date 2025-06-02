@@ -181,7 +181,7 @@ const AskAdvisorPage = () => {
 
         <div className="max-w-6xl mx-auto">
           {/* Chat Container */}
-          <div className="card p-0 mb-16" style={{ height: '60vh' }}>
+          <div className="card p-0 mb-24" style={{ height: '55vh' }}>
             {/* Chat Header */}
             <div className="flex items-center justify-between p-6 border-b border-gray-700">
               <div className="flex items-center space-x-3">
@@ -197,7 +197,7 @@ const AskAdvisorPage = () => {
             </div>
             
             {/* Messages Area */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-4" style={{ height: 'calc(60vh - 140px)' }}>
+            <div className="flex-1 overflow-y-auto p-6 space-y-4" style={{ height: 'calc(55vh - 140px)' }}>
               {messages.map((message) => (
                 <ChatMessage
                   key={message.id}
@@ -251,11 +251,11 @@ const AskAdvisorPage = () => {
             </div>
           </div>
 
-          {/* Suggested Questions - Now with much more space below the chat */}
+          {/* Suggested Questions - Now with maximum space below the chat */}
           {showSuggestions && messages.length <= 1 && (
-            <div className="animate-fade-in-up mt-16">
-              <h3 className="text-xl font-semibold mb-8 text-center">💡 Popular Questions</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
+            <div className="animate-fade-in-up mt-24">
+              <h3 className="text-xl font-semibold mb-10 text-center">💡 Popular Questions</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
                 {suggestedQuestions.map((item, index) => (
                   <button
                     key={index}
@@ -279,7 +279,7 @@ const AskAdvisorPage = () => {
           )}
 
           {/* Quick Links */}
-          <div className="flex flex-wrap justify-center gap-4 text-center mt-12">
+          <div className="flex flex-wrap justify-center gap-4 text-center mt-16">
             <Link
               to="/investments"
               className="btn btn-outline flex items-center space-x-2"
