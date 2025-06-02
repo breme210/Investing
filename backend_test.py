@@ -750,7 +750,7 @@ def test_investment_qa_api(tester):
 
 def main():
     # Get the backend URL from the frontend .env file
-    backend_url = "https://201e85b7-6e5c-4c05-8b17-d262a900ba36.preview.emergentagent.com"
+    backend_url = "https://f331cb83-b6cd-4e1b-a4a7-993eac227251.preview.emergentagent.com"
     
     print(f"Testing API at: {backend_url}")
     tester = APITester(backend_url)
