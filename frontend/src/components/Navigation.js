@@ -8,60 +8,54 @@ const Navigation = () => {
     return location.pathname === path;
   };
 
+  const navItems = [
+    { path: '/', label: 'Home', icon: '🏠' },
+    { path: '/news', label: 'News', icon: '📰' },
+    { path: '/investments', label: 'Investments', icon: '📊' },
+    { path: '/ask-advisor', label: 'AI Advisor', icon: '🤖' }
+  ];
+
   return (
-    <nav className="bg-gray-900 border-b border-gray-700 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav className="bg-gray-900/95 backdrop-blur-sm border-b border-gray-700 sticky top-0 z-50">
+      <div className="container-fluid">
         <div className="flex justify-between h-16">
+          {/* Logo Section */}
           <div className="flex items-center">
-            <Link to="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">H</span>
+            <Link to="/" className="flex items-center space-x-3 group">
+              <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                <span className="text-white font-bold text-lg">H</span>
               </div>
-              <span className="text-white font-semibold text-lg">Hub Editor</span>
+              <div className="flex flex-col">
+                <span className="text-white font-bold text-lg leading-tight">Hub Editor</span>
+                <span className="text-xs text-gray-400 leading-tight">Investment Platform</span>
+              </div>
             </Link>
           </div>
           
-          <div className="flex items-center space-x-8">
-            <Link
-              to="/"
-              className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                isActive('/') 
-                  ? 'text-white bg-gray-800' 
-                  : 'text-gray-300 hover:text-white hover:bg-gray-700'
-              }`}
-            >
-              Home
-            </Link>
-            <Link
-              to="/news"
-              className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                isActive('/news') || location.pathname.startsWith('/news/')
-                  ? 'text-white bg-gray-800' 
-                  : 'text-gray-300 hover:text-white hover:bg-gray-700'
-              }`}
-            >
-              News
-            </Link>
-            <Link
-              to="/investments"
-              className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                isActive('/investments') || location.pathname.startsWith('/investments/')
-                  ? 'text-white bg-gray-800' 
-                  : 'text-gray-300 hover:text-white hover:bg-gray-700'
-              }`}
-            >
-              Investments
-            </Link>
-            <Link
-              to="/ask-advisor"
-              className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                isActive('/ask-advisor')
-                  ? 'text-white bg-gray-800' 
-                  : 'text-gray-300 hover:text-white hover:bg-gray-700'
-              }`}
-            >
-              Ask Advisor
-            </Link>
+          {/* Navigation Items */}
+          <div className="flex items-center space-x-2">
+            {navItems.map((item) => {
+              const isCurrentlyActive = isActive(item.path) || 
+                (item.path !== '/' && location.pathname.startsWith(item.path + '/'));
+              
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`
+                    flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium 
+                    transition-all duration-200 hover:scale-105
+                    ${isCurrentlyActive 
+                      ? 'text-white bg-gray-800 shadow-lg' 
+                      : 'text-gray-300 hover:text-white hover:bg-gray-700'
+                    }
+                  `}
+                >
+                  <span className="text-base">{item.icon}</span>
+                  <span className="hidden sm:block">{item.label}</span>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </div>
