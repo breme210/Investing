@@ -181,7 +181,7 @@ const AskAdvisorPage = () => {
 
         <div className="max-w-6xl mx-auto">
           {/* Chat Container */}
-          <div className="card p-0 mb-6" style={{ height: '70vh' }}>
+          <div className="card p-0 mb-8" style={{ height: '65vh' }}>
             {/* Chat Header */}
             <div className="flex items-center justify-between p-6 border-b border-gray-700">
               <div className="flex items-center space-x-3">
@@ -197,7 +197,7 @@ const AskAdvisorPage = () => {
             </div>
             
             {/* Messages Area */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-4" style={{ height: 'calc(70vh - 140px)' }}>
+            <div className="flex-1 overflow-y-auto p-6 space-y-4" style={{ height: 'calc(65vh - 140px)' }}>
               {messages.map((message) => (
                 <ChatMessage
                   key={message.id}
@@ -251,9 +251,9 @@ const AskAdvisorPage = () => {
             </div>
           </div>
 
-          {/* Suggested Questions */}
+          {/* Suggested Questions - Now properly spaced below the chat */}
           {showSuggestions && messages.length <= 1 && (
-            <div className="animate-fade-in-up">
+            <div className="animate-fade-in-up mt-8">
               <h3 className="text-xl font-semibold mb-6 text-center">💡 Popular Questions</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
                 {suggestedQuestions.map((item, index) => (
@@ -279,7 +279,7 @@ const AskAdvisorPage = () => {
           )}
 
           {/* Quick Links */}
-          <div className="flex flex-wrap justify-center gap-4 text-center">
+          <div className="flex flex-wrap justify-center gap-4 text-center mt-8">
             <Link
               to="/investments"
               className="btn btn-outline flex items-center space-x-2"
